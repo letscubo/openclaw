@@ -70,6 +70,8 @@ type UsageWebhookPayload = {
   runId: string;
   model: string;
   provider?: string;
+  /** Gateway auth token for identifying the source instance in multi-gateway deployments */
+  gatewayToken?: string;
   usage: OpenAiUsage;
   durationMs?: number;
   cost?: {
@@ -124,8 +126,9 @@ function buildUsageWebhookPayload(params: {
   model: string;
   result: AgentCommandResult | null;
   usage: OpenAiUsage;
+  gatewayToken?: string;
 }): UsageWebhookPayload {
-  const { runId, model, result, usage } = params;
+  const { runId, model, result, usage, gatewayToken } = params;
   const agentMeta = result?.meta?.agentMeta;
   const rawUsage = agentMeta?.usage;
 
@@ -150,6 +153,7 @@ function buildUsageWebhookPayload(params: {
     runId,
     model,
     provider: agentMeta?.provider,
+    gatewayToken,
     usage,
     durationMs: result?.meta?.durationMs,
     cost,
@@ -374,6 +378,7 @@ export async function handleOpenAiHttpRequest(
           model,
           result: typedResult,
           usage,
+          gatewayToken: opts.auth.token,
         });
         void sendUsageWebhook({ webhookUrl: opts.usageWebhookUrl, payload: webhookPayload });
       }
@@ -542,6 +547,7 @@ export async function handleOpenAiHttpRequest(
           model,
           result: streamResult,
           usage,
+          gatewayToken: opts.auth.token,
         });
         void sendUsageWebhook({ webhookUrl: opts.usageWebhookUrl, payload: webhookPayload });
       }

@@ -1,0 +1,14 @@
+{
+  "id": "llm-key-manager",
+  "name": "LLM Key Manager",
+  "description": "HTTP API for real-time LLM key management",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "enabled": { "type": "boolean" },
+      "authToken": { "type": "string" },
+      "routePrefix": { "type": "string" }
+    }
+  }
+}

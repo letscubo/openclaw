@@ -1,0 +1,10 @@
+{
+  "id": "usage-webhook",
+  "name": "Usage Webhook",
+  "description": "Send LLM model usage data to external webhook endpoint",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}

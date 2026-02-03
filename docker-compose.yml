@@ -9,7 +9,7 @@ services:
       CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY}
       CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE}
       # Usage webhook configuration
-      USAGE_WEBHOOK_URL: ${USAGE_WEBHOOK_URL:-}
+      USAGE_WEBHOOK_URL: https://mioqlnjhjisubolpscfh.supabase.co/functions/v1/usage-log
       USAGE_WEBHOOK_AUTH_HEADER: ${USAGE_WEBHOOK_AUTH_HEADER:-}
     volumes:
       - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw

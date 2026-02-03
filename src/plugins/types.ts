@@ -202,6 +202,10 @@ export type OpenClawPluginServiceContext = {
   workspaceDir?: string;
   stateDir: string;
   logger: PluginLogger;
+  /** Subscribe to diagnostic events (uses the main process's listener registry) */
+  onDiagnosticEvent?: (
+    listener: (evt: import("../infra/diagnostic-events.js").DiagnosticEventPayload) => void,
+  ) => () => void;
 };
 
 export type OpenClawPluginService = {

@@ -1,5 +1,4 @@
-import type { DiagnosticEventPayload, OpenClawPluginService } from "openclaw/plugin-sdk";
-import { onDiagnosticEvent } from "openclaw/plugin-sdk";
+import type { DiagnosticEventPayload, OpenClawPluginService, OpenClawPluginServiceContext } from "openclaw/plugin-sdk";
 
 export type UsageWebhookConfig = {
   /** Webhook URL to send usage data */
@@ -191,12 +190,19 @@ export function createUsageWebhookService(): OpenClawPluginService {
 
       ctx.logger.info(`usage-webhook: enabled, sending to ${webhookUrl}`);
 
-      // Subscribe to diagnostic events
-      unsubscribe = onDiagnosticEvent((evt: DiagnosticEventPayload) => {
+      // Subscribe to diagnostic events using context's onDiagnosticEvent
+      // (avoids jiti module aliasing issues)
+      if (!ctx.onDiagnosticEvent) {
+        ctx.logger.warn(`usage-webhook: onDiagnosticEvent not available in context`);
+        return;
+      }
+      unsubscribe = ctx.onDiagnosticEvent((evt: DiagnosticEventPayload) => {
+        ctx.logger.info(`usage-webhook: received event type=${evt.type}`);
         if (evt.type !== "model.usage") {
           return;
         }
 
+        ctx.logger.info(`usage-webhook: processing model.usage event`);
         const payload = transformUsageEvent(evt);
         batch.push(payload);
 

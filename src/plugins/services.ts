@@ -1,6 +1,7 @@
 import type { OpenClawConfig } from "../config/config.js";
 import type { PluginRegistry } from "./registry.js";
 import { STATE_DIR } from "../config/paths.js";
+import { onDiagnosticEvent } from "../infra/diagnostic-events.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 
 const log = createSubsystemLogger("plugins");
@@ -32,6 +33,7 @@ export async function startPluginServices(params: {
           error: (msg) => log.error(msg),
           debug: (msg) => log.debug(msg),
         },
+        onDiagnosticEvent,
       });
       running.push({
         id: service.id,

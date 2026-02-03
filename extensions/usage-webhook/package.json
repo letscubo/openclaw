@@ -1,0 +1,14 @@
+{
+  "name": "@openclaw/usage-webhook",
+  "version": "2026.2.1",
+  "description": "Send LLM model usage data to external webhook endpoint",
+  "type": "module",
+  "devDependencies": {
+    "openclaw": "workspace:*"
+  },
+  "openclaw": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

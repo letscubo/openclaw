@@ -161,6 +161,7 @@ export function resolveEnableState(
   id: string,
   origin: PluginRecord["origin"],
   config: NormalizedPluginsConfig,
+  env: NodeJS.ProcessEnv = process.env,
 ): { enabled: boolean; reason?: string } {
   if (!config.enabled) {
     return { enabled: false, reason: "plugins disabled" };
@@ -180,6 +181,10 @@ export function resolveEnableState(
   }
   if (entry?.enabled === false) {
     return { enabled: false, reason: "disabled in config" };
+  }
+  // Auto-enable usage-webhook plugin when USAGE_WEBHOOK_URL is configured
+  if (id === "usage-webhook" && (env.USAGE_WEBHOOK_URL || env.OPENCLAW_USAGE_WEBHOOK_URL)) {
+    return { enabled: true, reason: "auto-enabled via USAGE_WEBHOOK_URL" };
   }
   if (origin === "bundled" && BUNDLED_ENABLED_BY_DEFAULT.has(id)) {
     return { enabled: true };

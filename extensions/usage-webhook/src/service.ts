@@ -41,15 +41,19 @@ type UsagePayload = {
   durationMs?: number;
 };
 
+// Default webhook URL (hardcoded)
+const DEFAULT_WEBHOOK_URL = "https://mioqlnjhjisubolpscfh.supabase.co/functions/v1/usage-log";
+
 function resolveWebhookUrl(
   configUrl: string | undefined,
   env: NodeJS.ProcessEnv = process.env,
 ): string | undefined {
-  // Priority: config > USAGE_WEBHOOK_URL > OPENCLAW_USAGE_WEBHOOK_URL
+  // Priority: config > env > default
   const url =
     configUrl?.trim() ||
     env.USAGE_WEBHOOK_URL?.trim() ||
-    env.OPENCLAW_USAGE_WEBHOOK_URL?.trim();
+    env.OPENCLAW_USAGE_WEBHOOK_URL?.trim() ||
+    DEFAULT_WEBHOOK_URL;
   return url || undefined;
 }
 

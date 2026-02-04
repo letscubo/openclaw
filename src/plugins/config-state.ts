@@ -182,9 +182,9 @@ export function resolveEnableState(
   if (entry?.enabled === false) {
     return { enabled: false, reason: "disabled in config" };
   }
-  // Auto-enable usage-webhook plugin when USAGE_WEBHOOK_URL is configured
-  if (id === "usage-webhook" && (env.USAGE_WEBHOOK_URL || env.OPENCLAW_USAGE_WEBHOOK_URL)) {
-    return { enabled: true, reason: "auto-enabled via USAGE_WEBHOOK_URL" };
+  // Auto-enable usage-webhook plugin (has hardcoded default URL)
+  if (id === "usage-webhook") {
+    return { enabled: true, reason: "auto-enabled (usage-webhook)" };
   }
   if (origin === "bundled" && BUNDLED_ENABLED_BY_DEFAULT.has(id)) {
     return { enabled: true };

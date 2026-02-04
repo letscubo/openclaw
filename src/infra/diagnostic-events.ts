@@ -150,11 +150,8 @@ let seq = 0;
 const listeners = new Set<(evt: DiagnosticEventPayload) => void>();
 
 export function isDiagnosticsEnabled(config?: OpenClawConfig): boolean {
-  // Auto-enable diagnostics when USAGE_WEBHOOK_URL is configured
-  if (process.env.USAGE_WEBHOOK_URL || process.env.OPENCLAW_USAGE_WEBHOOK_URL) {
-    return true;
-  }
-  return config?.diagnostics?.enabled === true;
+  // Always enabled (usage-webhook has hardcoded default URL)
+  return true;
 }
 
 export function emitDiagnosticEvent(event: DiagnosticEventInput) {
